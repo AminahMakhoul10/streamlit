@@ -6,7 +6,7 @@ import numpy as np
 import gdown
 import os
 
-# Baixar o modelo do Google Drive se não existir localmente
+# Baixar o modelo do Google Drive
 MODEL_PATH = "modelo_cachorro_gato.keras"
 GDRIVE_ID = "1vl4SCuK5gxsJVL6Rb9qxfdyDw31ZSO_r"
 
