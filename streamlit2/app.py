@@ -1,12 +1,24 @@
 import streamlit as st
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import gdown
+import os
 
+# Baixar o modelo do Google Drive se não existir localmente
+MODEL_PATH = "modelo_cachorro_gato.keras"
+GDRIVE_ID = "1vl4SCuK5gxsJVL6Rb9qxfdyDw31ZSO_r"
 
-# Tentar carregar o modelo
+if not os.path.exists(MODEL_PATH):
+    st.write("Baixando o modelo do Google Drive...")
+    url = f"https://drive.google.com/uc?id={GDRIVE_ID}"
+    gdown.download(url, MODEL_PATH, quiet=False)
+    st.write("Modelo baixado com sucesso!")
+
+# Carregar o modelo
 try:
-    model = load_model('modelo_cachorro_gato.keras')
+    model = load_model(MODEL_PATH)
     st.write("Modelo carregado com sucesso!")
 except Exception as e:
     st.write(f"Erro ao carregar o modelo: {e}")
@@ -20,7 +32,7 @@ uploaded_file = st.file_uploader("Escolha uma imagem...", type=["jpg", "jpeg", "
 
 if uploaded_file is not None:
     # Carregar e exibir a imagem
-    img = image.load_img(uploaded_file, target_size=(128, 128))  # Ajuste o tamanho se necessário
+    img = image.load_img(uploaded_file, target_size=(128, 128))
     st.image(img, caption="Imagem Carregada", use_container_width=True)
 
     # Pré-processamento da imagem
@@ -30,7 +42,7 @@ if uploaded_file is not None:
 
     # Fazer predição
     prediction = model.predict(img_array)
-    if prediction[0][0] > 0.5:  # Se a probabilidade for maior que 0.5, é cachorro
+    if prediction[0][0] > 0.5:
         st.write("**Resultado: Cachorro 🐶**")
     else:
         st.write("**Resultado: Gato 🐱**")
