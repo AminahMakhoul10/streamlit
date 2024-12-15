@@ -3,3 +3,6 @@ streamlit run app.py para rodar
 
 # Link do deploy no streamlit
 https://aminahmakhoul.streamlit.app/
+
+# Para rodar no terminal (venv)
+streamlit run app.py
